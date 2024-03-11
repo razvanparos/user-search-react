@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './Home.css';
 import searchIcon from './icon-search.svg'
+import axios from 'axios';
 
 function Home() {
     const [userData, setUserData] = useState();
@@ -8,24 +9,29 @@ function Home() {
     const [userSearch, setUserSearch] = useState('');
     const [userNotFound, setUserNotFound] = useState(false);
     useEffect(()=>{
-        fetch(`https://api.github.com/users/${userEndpoint}`)
+        axios.get(`https://api.github.com/users/${userEndpoint}`)
         .then(response=>{
-          if(!response.ok){ 
-            setUserNotFound(true);
-            setUserEndpoint('octocat')
-          }
-          return response.json();
+          setUserData(response.data)
+          setUserNotFound(false); 
         })
-        .then(data=>setUserData(data))
-        .catch(error=>{
-          console.log(error)
-        }
-        )
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+          setUserNotFound(true); 
+          });
+          
+        
     },[userEndpoint])
 
     const handleSearchChange = (e) =>{
         setUserSearch(e.target.value)
     }
+    const handleSearch =  () => {
+      if (userSearch) {
+          setUserEndpoint(userSearch)
+          setUserSearch('');
+      }
+  }
+
     
   return (
     <div className="home-div">
@@ -39,16 +45,10 @@ function Home() {
       <div className='search-bar-div'>
         <div className='search-logo-input'>
           <img src={searchIcon} alt="" />
-          <input type="text" value={userSearch} className='search-input' placeholder='Search GitHub user...' onChange={handleSearchChange}/>
+          <input type="text" value={userSearch} className='search-input' placeholder='Search GitHub username...' onChange={handleSearchChange}/>
         </div>
         
-        <button className='search-btn' onClick={()=>{
-          if(userSearch){
-            setUserEndpoint(userSearch)
-            setUserSearch('')
-          }
-          }}>Search
-        </button>
+        <button className='search-btn' onClick={handleSearch} >Search</button>
       </div>
       <p className={`not-found ${userNotFound?'not-hidden':'hidden'}`}>User not found</p>
       {userData && (
@@ -56,7 +56,7 @@ function Home() {
             <img src={userData.avatar_url} alt="" className='avatar'/>
             <div className='user-details-top'>
                 <p className='user-name'>{userData.name}</p>
-                <p className='user-login'>@{userData.login}</p>
+                <a className='user-login' href={`https://github.com/${userData.login}`} target='blank'>@{userData.login}</a>
                 <p className='joined'>Joined {(() => {
                   const date = new Date(userData.created_at);
                   const dayOfMonth = date.getDate();
@@ -69,7 +69,7 @@ function Home() {
                   return `${dayOfMonth} ${monthNames[month]} ${year}`;
                 })()}</p>
             </div>
-            <p>{`${userData.bio ? userData.bio :'This profile has no bio'}`}</p>
+            <p className='bio'>{`${userData.bio ? userData.bio :'This profile has no bio'}`}</p>
             <div className='user-stats-div'>
                 <div className='stat'>
                     <p>Repos</p>
@@ -104,7 +104,7 @@ function Home() {
                       <path d="M13.439 13.75a.401.401 0 00.006-.003c.659-1.204.788-2.586.48-3.933l-.002.002-.001-.001a5.434 5.434 0 00-2.19-3.124.3.3 0 00-.333.015c-.553.448-1.095 1.021-1.452 1.754a.243.243 0 00.096.317c.415.24.79.593 1.04 1.061h.001c.196.33.388.958.263 1.632-.116.894-1.019 1.714-1.736 2.453-.546.559-1.935 1.974-2.49 2.542a2.6 2.6 0 01-3.666.037 2.6 2.6 0 01-.038-3.666l1.521-1.564A.266.266 0 005 11.004c-.338-1.036-.43-2.432-.217-3.51.006-.03-.031-.049-.053-.027l-3.179 3.245c-2.083 2.126-2.066 5.588.04 7.693 2.125 2.083 5.57 2.048 7.653-.078.723-.81 3.821-3.678 4.195-4.577z"></path>
                     </g>
                   </svg>
-                  <p className='blog'>{`${userData.blog?userData.blog:'Not available'}`}</p>
+                  <a href={`${userData.blog}`} target='blank' className='blog'>{`${userData.blog?userData.blog:'Not available'}`}</a>
                 </div>
                 <div className='detail'>
                   <svg height="20" width="20" xmlns="http://www.w3.org/2000/svg" className="user-link-icon">

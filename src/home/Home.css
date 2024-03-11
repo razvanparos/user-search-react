@@ -39,6 +39,9 @@
     width: 100%;
     font-size: 11px;
 }
+.search-input::placeholder{
+    color: #4b6a9b;
+}
 .search-input:focus{
     outline: none;
 }
@@ -49,6 +52,7 @@
     border-radius: 10px;
     font-weight: 700;
     padding: 12px 8px;
+    cursor: pointer;
 }
 .search-logo-input{
     display: flex;
@@ -106,6 +110,11 @@
 .blog{
     max-width: 270px;
     overflow: hidden;
+    text-decoration: none;
+    color: #2b3442;
+}
+.blog:hover{
+    text-decoration: underline;
 }
 .user-name{
     color: #2b3442;
@@ -114,6 +123,7 @@
 }
 .user-login{
     color:#0079ff;
+    text-decoration: none;
 }
 .joined{
     color: #697c9a;
@@ -133,4 +143,26 @@
 }
 .hidden{
     opacity: 0px;
+}
+.bio{
+    text-align:center;
+    max-width: 70%;
+}
+
+@media (min-width:425px) {
+    .user-details-bottom{
+        display: grid;
+        width: fit-content;
+        gap: 24px;
+        grid-template: 
+            'detail detail'
+            'detail detail'
+        ;
+    }
+    .search-input{
+        font-size: 18px;
+    }
+    .search-btn{
+       font-size: 18px;
+    }
 }
