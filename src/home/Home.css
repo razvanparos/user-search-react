@@ -1,6 +1,11 @@
 .home-div{
     width: 100%;
+    min-width: fit-content;
+    height:911px ;
     max-width: 900px;
+    padding: 40px 12px;
+    transform: 0.2s;
+    background-color: white;
 }
 .header{
     display: flex;
@@ -8,6 +13,7 @@
     justify-content: space-between;
    
 }
+
 .theme-switch-btn{
     display: flex;
     align-items: center;
@@ -120,6 +126,7 @@
     color: #2b3442;
     font-weight: 700;
     font-size: 16px;
+    background-color: white;
 }
 .user-login{
     color:#0079ff;
@@ -148,7 +155,21 @@
     text-align:center;
     max-width: 70%;
 }
-
+.stat p{
+    color: #4b6a9b;
+}
+.stat span{
+    color: #2b3442;
+    font-weight: 700;
+    background-color: white;
+}
+.hidden{
+    display: none;
+}
+.dark-theme{
+    background-color: #141d2f !important;
+    color: white !important;
+}
 @media (min-width:425px) {
     .user-details-bottom{
         display: grid;
